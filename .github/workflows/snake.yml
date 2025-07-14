@@ -1,0 +1,53 @@
+permissions:
+  contents: write
+
+
+name: GitHub Snake Game
+
+on:
+  # İş akışını her gün UTC 07:00'de (Türkiye saatiyle 10:00) çalışacak şekilde planla
+  schedule:
+    - cron: "0 7 * * *" 
+
+  # İş akışının manuel olarak da tetiklenmesine izin ver
+  workflow_dispatch:
+
+  # main dalına yapılan push işlemlerinde iş akışını tetikle
+  push:
+    branches:
+      - main
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10 # İşlem için maksimum 10 dakika süre tanır
+
+    steps:
+      # Adım 1: Depoyu kontrol et
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Adım 2: Yılan animasyonlarını oluştur
+      - name: Generate GitHub Contributions Snake Animations
+        uses: Platane/snk@v3
+        with:
+          # Animasyonun oluşturulacağı GitHub kullanıcı adı
+          github_user_name: SumeyyeNurlu # <-- Burası sizin GitHub kullanıcı adınız
+
+          # Çıktı dosyalarını ve konfigürasyonlarını tanımla
+          outputs: |
+            dist/github-snake.svg
+            dist/github-snake-dark.svg?palette=github-dark
+            dist/ocean.gif?color_snake=orange&color_dots=#bfd6f6,#8dbdff,#64a1f4,#4b91f1,#3c7dd9
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub Token'ı kullanır
+
+      # Adım 3: Oluşturulan dosyaları 'output' dalına dağıt
+      - name: Deploy to Output Branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist # Dağıtılacak dizin
+          publish_branch: output # Yayınlanacak dal
+          # İsteğe bağlı: Özel bir commit mesajı belirleyebilirsiniz
+          commit_message: "Update snake animation [skip ci]"
