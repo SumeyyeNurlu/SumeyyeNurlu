@@ -8,7 +8,7 @@ I'm a computer engineering student at Sakarya University. <br>
 Currently learning **Java,Python**. <br>
 By exploring different branches of software, I'm figuring out what I actually like. <br>
 Reach me at: nurlusumeyye@gmail.com <br>
-Linkedin:  (https://www.linkedin.com/in/sumeyye-/)
+Linkedin:  https://www.linkedin.com/in/sumeyye-/
 
 ***
 
